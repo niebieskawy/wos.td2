@@ -101,6 +101,9 @@
     
 <script src="baza.js"></script>
 <script type="module">
+    // Przechowuj dane pociągów globalnie
+    let trainsData = [];
+
     // Funkcja do pobierania aktywnych maszynistów z API i wypełniania select
     async function loadMaszynisci() {
         const select = document.getElementById('maszynista');
@@ -111,9 +114,12 @@
             }
             const data = await response.json();
             
-            // Wyciągnij unikalne driverName z danych (zakładam, że data to array obiektów train)
+            // API zwraca obiekt z kolejami jako właściwościami numerycznymi (0, 1, 2...)
+            trainsData = Object.values(data).filter(item => item && typeof item === 'object' && item.driverName);
+            
+            // Wyciągnij unikalne driverName z danych
             const maszynisci = new Set();
-            data.forEach(train => {
+            trainsData.forEach(train => {
                 if (train.driverName) {
                     maszynisci.add(train.driverName);
                 }
@@ -133,6 +139,45 @@
             select.appendChild(option);
         }
     }
+
+    // Funkcja do aktualizacji stacji na podstawie wybranego maszynisty
+    function updateStacjeFromMaszynista() {
+        const selectedDriver = document.getElementById('maszynista').value;
+        if (!selectedDriver) {
+            document.getElementById('stacje').value = '';
+            return;
+        }
+
+        // Znajdź pociąg tego maszynisty
+        const train = trainsData.find(t => t.driverName === selectedDriver);
+        if (!train || !train.path) {
+            document.getElementById('stacje').value = '';
+            return;
+        }
+
+        // Parsuj path - usuń znaczniki @, weź tylko nazwy stacji
+        const pathStations = train.path
+            .split(',')
+            .map(segment => segment.split('@')[0].trim())
+            .filter(name => name);
+
+        // Dopasuj do kluczy w BAZA_OSTRZEZEN
+        const matchedStations = [];
+        const bazyKeys = Object.keys(BAZA_OSTRZEZEN);
+        
+        pathStations.forEach(pathStation => {
+            const found = bazyKeys.find(key => normalizuj(key) === normalizuj(pathStation));
+            if (found) {
+                matchedStations.push(found);
+            }
+        });
+
+        // Wypełnij textarea dopasowanymi stacjami
+        document.getElementById('stacje').value = matchedStations.join(', ');
+    }
+
+    // Dodaj event listener do selecta maszynisty
+    document.getElementById('maszynista').addEventListener('change', updateStacjeFromMaszynista);
 
     // Załaduj maszynistów po załadowaniu strony
     document.addEventListener('DOMContentLoaded', loadMaszynisci);
