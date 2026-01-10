@@ -177,6 +177,9 @@
 
         // Wypełnij textarea dopasowanymi stacjami
         document.getElementById('stacje').value = pathStations.join(',');
+        if(selectedDriver){
+         generujWOS()
+        }
     }
 
     // Dodaj event listener do selecta maszynisty
@@ -194,7 +197,7 @@
         return km ? km.replace('.', ',') : '—';
     }
 
-    window.generujWOS = function() {
+     function generujWOS() {
         const maszynista = document.getElementById("maszynista").value || "—";
         const input = document.getElementById("stacje").value.trim();
 
@@ -269,7 +272,8 @@
         }
 
         document.getElementById("wynik").innerHTML = html;
-    }
+}
+    window.generujWOS=generujWOS
 </script>
 </body>
 </html>
