@@ -20,18 +20,19 @@
             margin: 0 auto 30px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
-        input, textarea, select { 
+        label { display: block; margin: 12px 0 4px; font-weight: bold; }
+        select { 
             width: 100%; 
             padding: 10px; 
-            margin: 10px 0 15px; 
             border: 1px solid #666; 
             border-radius: 4px; 
             font-family: monospace; 
             font-size: 1.05em;
+            box-sizing: border-box;
         }
         button { 
             padding: 10px 22px; 
-            margin: 0 10px 10px 0; 
+            margin: 12px 12px 12px 0; 
             background: #0d47a1; 
             color: white; 
             border: none; 
@@ -40,6 +41,7 @@
             font-weight: bold;
         }
         button:hover { background: #1565c0; }
+        button:disabled { opacity: 0.6; cursor: not-allowed; }
 
         .wos-table {
             width: 100%;
@@ -62,12 +64,6 @@
             padding-left: 12px;
             height: 30px;
         }
-        .wos-table .col-nr     { width: 3em; }
-        .wos-table .col-km     { width: 7em; }
-        .wos-table .col-przyczyna { width: 36%; }
-        .wos-table .col-tor    { width: 3.5em; }
-        .wos-table .col-v      { width: 6.5em; }
-        .wos-table .col-uwagi  { width: 24%; text-align: left; }
 
         @media print {
             .no-print { display: none !important; }
@@ -80,16 +76,13 @@
 
 <div class="container no-print">
     <h1>Wykaz Ostrzeżeń Stałych (WOS) – TD2</h1>
-    
+
     <label for="maszynista">Maszynista:</label>
-    <select id="maszynista">
-        <option value="">-- Wybierz maszynistę --</option>
+    <select id="maszynista" required>
+        <option value="" disabled selected>Ładowanie aktywnych maszynistów...</option>
     </select>
 
-    <label for="stacje">Scenerie (oddziel przecinkami):</label>
-    <textarea id="stacje" rows="6" placeholder="Arkadia Zdrój, Lisków, Kowalewo, Nowa Wieś Wielka, Odolany, Zakopane"></textarea>
-
-    <div>
+    <div style="margin-top: 16px;">
         <button onclick="generujWOS()">Generuj WOS</button>
         <button onclick="window.print()">Drukuj / Zapisz jako PDF</button>
     </div>
@@ -98,95 +91,60 @@
 <div class="container">
     <div id="wynik"></div>
 </div>
-    
-<script src="baza.js"></script>
+
 <script type="module">
-    // Przechowuj dane pociągów globalnie
-    let trainsData = [];
+    import { BAZA_OSTRZEZEN } from './baza.js';
 
-    // Funkcja do pobierania aktywnych maszynistów z API i wypełniania select
-    async function loadMaszynisci() {
+    async function zaladujMaszynistow() {
         const select = document.getElementById('maszynista');
+        
         try {
-            const response = await fetch('https://stacjownik.spythere.eu/api/getActiveData');
-            if (!response.ok) {
-                throw new Error('Błąd pobierania danych z API');
-            }
+            const response = await fetch('https://stacjownik.spythere.eu/api/getActiveData', {
+                cache: 'no-cache'
+            });
+
+            if (!response.ok) throw new Error(`API: ${response.status}`);
+
             const data = await response.json();
-            
-            console.log('Pobrane dane z API:', data);
-
-            // API zwraca obiekt z kolejami jako właściwościami numerycznymi (0, 1, 2...)
-            trainsData = data.trains
-            
-            console.log('Przetworzone dane pociągów:', trainsData);
-            // Wyciągnij unikalne driverName z danych
             const maszynisci = new Set();
-            trainsData.forEach(train => {
-                if (train.driverName) {
-                    maszynisci.add(train.driverName);
-                }
-            });
 
-            console.log('Unikalni maszynisci:', maszynisci);
-            
-            // Posortuj alfabetycznie i dodaj opcje
-            Array.from(maszynisci).sort().forEach(name => {
-                const option = document.createElement('option');
-                option.value = name;
-                option.textContent = name;
-                select.appendChild(option);
-            });
-        } catch (error) {
-            console.error('Błąd ładowania maszynistów:', error);
-            const option = document.createElement('option');
-            option.textContent = 'Błąd ładowania danych';
-            select.appendChild(option);
+            if (Array.isArray(data)) {
+                data.forEach(train => {
+                    if (train?.driverName?.trim()) {
+                        maszynisci.add(train.driverName.trim());
+                    }
+                });
+            }
+
+            select.innerHTML = '<option value="" disabled selected>Wybierz maszynistę</option>';
+
+            if (maszynisci.size === 0) {
+                select.innerHTML += '<option disabled>Brak aktywnych maszynistów</option>';
+                return;
+            }
+
+            [...maszynisci]
+                .sort((a, b) => a.localeCompare(b, 'pl'))
+                .forEach(nick => {
+                    const opt = document.createElement('option');
+                    opt.value = nick;
+                    opt.textContent = nick;
+                    select.appendChild(opt);
+                });
+
+        } catch (err) {
+            console.error('Błąd pobierania maszynistów:', err);
+            select.innerHTML = '<option disabled>Błąd ładowania listy maszynistów</option>';
         }
     }
 
-    // Funkcja do aktualizacji stacji na podstawie wybranego maszynisty
-    function updateStacjeFromMaszynista() {
-        const selectedDriver = document.getElementById('maszynista').value;
-        if (!selectedDriver) {
-            document.getElementById('stacje').value = '';
-            return;
+    document.addEventListener('DOMContentLoaded', zaladujMaszynistow);
+
+    document.getElementById('maszynista').addEventListener('change', function() {
+        if (this.value) {
+            generujWOS();
         }
-
-        // Znajdź pociąg tego maszynisty
-        const train = trainsData.find(t => t.driverName === selectedDriver);
-        console.log('Wybrany pociąg maszynisty:', train);
-        if (!train || !train.timetable?.path) {
-            document.getElementById('stacje').value = '';
-            return;
-        }
-
-
-        // Parsuj path - usuń znaczniki @, weź tylko nazwy stacji
-        const pathStations = train.timetable.path
-            .split(',')
-            .map(segment => segment.split('@')[0].trim())
-            .filter(name => name.includes('.sc'))
-            .map(name => {
-                // Wyciągnij nazwę stacji z formatu "Nazwa Stacji 12345678.sc"
-                const match = name.match(/^(.+?)\s+[0-9a-f]{8}\.sc$/);
-                return match ? match[1] : name;
-            })
-
-        console.log('Stacje z trasy pociągu:', pathStations);
-
-        // Wypełnij textarea dopasowanymi stacjami
-        document.getElementById('stacje').value = pathStations.join(',');
-        if(selectedDriver){
-         generujWOS()
-        }
-    }
-
-    // Dodaj event listener do selecta maszynisty
-    document.getElementById('maszynista').addEventListener('change', updateStacjeFromMaszynista);
-
-    // Załaduj maszynistów po załadowaniu strony
-    document.addEventListener('DOMContentLoaded', loadMaszynisci);
+    });
 
     function normalizuj(nazwa) {
         return (nazwa || "").trim().toLowerCase()
@@ -197,16 +155,9 @@
         return km ? km.replace('.', ',') : '—';
     }
 
-     function generujWOS() {
+    function generujWOS() {
         const maszynista = document.getElementById("maszynista").value || "—";
-        const input = document.getElementById("stacje").value.trim();
 
-        if (!input) {
-            alert("Wpisz przynajmniej jedną scenerię!");
-            return;
-        }
-
-        const wpisy = input.split(/[,;]\s*/).map(s => s.trim());
         let lp = 1;
 
         let html = `
@@ -214,6 +165,9 @@
             Wykaz Ostrzeżeń Stałych<br>
             oraz prędkości drogowych na torach głównych zasadniczych
         </h1>
+        <p style="text-align:center; margin-bottom:12px;">
+            Maszynista: <strong>${maszynista}</strong>
+        </p>
 
         <table class="wos-table">
           <thead>
@@ -238,42 +192,12 @@
           </thead>
           <tbody>`;
 
-        wpisy.forEach(nazwaWp => {
-            const klucz = Object.keys(BAZA_OSTRZEZEN).find(k => normalizuj(k) === normalizuj(nazwaWp));
-            if (!klucz) return;
-
-            html += `<tr><td colspan="8" class="station-header">${klucz}</td></tr>`;
-
-            const dane = [...BAZA_OSTRZEZEN[klucz]].sort((a,b) => {
-                const ka = parseFloat(a[0] || a[1] || -999999);
-                const kb = parseFloat(b[0] || b[1] || -999999);
-                return ka - kb;
-            });
-
-            dane.forEach(([od, doo, przyczyna, tor, vNiep, vPar, uwagi]) => {
-                html += `
-                <tr>
-                  <td>${lp++}</td>
-                  <td>${formatKm(od)}</td>
-                  <td>${formatKm(doo)}</td>
-                  <td style="text-align:left; padding-left:8px;">${przyczyna || '—'}</td>
-                  <td>${tor || '—'}</td>
-                  <td>${vNiep || '—'}</td>
-                  <td>${vPar || '—'}</td>
-                  <td style="text-align:left; padding-left:8px;">${uwagi || '—'}</td>
-                </tr>`;
-            });
-        });
-
         html += "</tbody></table>";
 
-        if (lp === 1) {
-            html += '<p style="text-align:center; color:#c00; margin-top:30px; font-size:14pt;"><b>Nie znaleziono żadnej znanej scenerii</b></p>';
-        }
+        html += '<p style="text-align:center; color:#c00; margin-top:30px; font-size:14pt;"><b>Wybierz maszynistę, aby zobaczyć ostrzeżenia</b></p>';
 
         document.getElementById("wynik").innerHTML = html;
-}
-    window.generujWOS=generujWOS
+    }
 </script>
 </body>
 </html>
