@@ -98,10 +98,9 @@
 <div class="container">
     <div id="wynik"></div>
 </div>
-
+    
+<script src="baza.js"></script>
 <script type="module">
-    import { BAZA_OSTRZEZEN } from './baza.js';
-
     // Funkcja do pobierania aktywnych maszynistów z API i wypełniania select
     async function loadMaszynisci() {
         const select = document.getElementById('maszynista');
