@@ -5,78 +5,41 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>WOS TD2 - Generator ostrzeżeń stałych</title>
     <style>
-        :root {
-            --bg: #f9f9f9;
-            --text: #000;
-            --container-bg: white;
-            --border: #aaa;
-            --shadow: rgba(0,0,0,0.15);
-            --primary: #0d47a1;
-            --primary-hover: #1565c0;
-            --table-header: #e8e8e8;
-            --station-header: #fffacd;
+        body { 
+            font-family: Arial, Helvetica, sans-serif; 
+            margin: 20px; 
+            background: #f9f9f9; 
+            color: #000; 
         }
-
-        [data-theme="dark"] {
-            --bg: #121212;
-            --text: #e0e0e0;
-            --container-bg: #1e1e1e;
-            --border: #444;
-            --shadow: rgba(0,0,0,0.6);
-            --primary: #4a90e2;
-            --primary-hover: #6aa8f7;
-            --table-header: #2a2a2a;
-            --station-header: #3a3a3a;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 20px;
-            background: var(--bg);
-            color: var(--text);
-            transition: background 0.4s, color 0.4s;
-        }
-
-        h1 { color: var(--primary); text-align: center; margin-bottom: 0.4em; }
-
-        .container {
-            background: var(--container-bg);
-            padding: 20px;
-            border: 1px solid var(--border);
-            max-width: 1500px;
+        h1 { color: #0d47a1; text-align: center; margin-bottom: 0.4em; }
+        .container { 
+            background: white; 
+            padding: 20px; 
+            border: 1px solid #aaa; 
+            max-width: 1500px; 
             margin: 0 auto 30px;
-            box-shadow: 0 2px 10px var(--shadow);
-            border-radius: 8px;
-            transition: all 0.4s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.15);
         }
-
-        label { display: block; margin: 12px 0 4px; font-weight: bold; }
-
-        select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            font-family: monospace;
+        input, textarea, select { 
+            width: 100%; 
+            padding: 10px; 
+            margin: 10px 0 15px; 
+            border: 1px solid #666; 
+            border-radius: 4px; 
+            font-family: monospace; 
             font-size: 1.05em;
-            background: var(--container-bg);
-            color: var(--text);
-            box-sizing: border-box;
         }
-
-        button {
-            padding: 10px 22px;
-            margin: 12px 12px 12px 0;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        button { 
+            padding: 10px 22px; 
+            margin: 0 10px 10px 0; 
+            background: #0d47a1; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
             font-weight: bold;
-            transition: background 0.3s;
         }
-
-        button:hover { background: var(--primary-hover); }
+        button:hover { background: #1565c0; }
 
         .wos-table {
             width: 100%;
@@ -84,79 +47,46 @@
             font-size: 9.5pt;
             margin-top: 12px;
         }
-
         .wos-table th, .wos-table td {
-            border: 1px solid var(--border);
+            border: 1px solid black;
             padding: 4px 6px;
             text-align: center;
             vertical-align: middle;
         }
-
-        .wos-table th { background-color: var(--table-header); font-weight: bold; }
-
+        .wos-table th { background-color: #e8e8e8; font-weight: bold; }
         .wos-table .station-header {
-            background-color: var(--station-header);
+            background-color: #fffacd;
             font-size: 11pt;
             font-weight: bold;
             text-align: left;
             padding-left: 12px;
             height: 30px;
         }
-
-        /* Przełącznik motywu – prawy górny róg */
-        .theme-toggle {
-            position: fixed;
-            top: 16px;
-            right: 20px;
-            z-index: 1000;
-            background: rgba(255,255,255,0.9);
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            transition: all 0.3s;
-        }
-
-        [data-theme="dark"] .theme-toggle {
-            background: rgba(30,30,30,0.9);
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        .theme-toggle span {
-            font-size: 24px;
-        }
+        .wos-table .col-nr     { width: 3em; }
+        .wos-table .col-km     { width: 7em; }
+        .wos-table .col-przyczyna { width: 36%; }
+        .wos-table .col-tor    { width: 3.5em; }
+        .wos-table .col-v      { width: 6.5em; }
+        .wos-table .col-uwagi  { width: 24%; text-align: left; }
 
         @media print {
-            .no-print, .theme-toggle { display: none !important; }
+            .no-print { display: none !important; }
             body { margin: 0; background: white; }
             .container { border: none; box-shadow: none; padding: 0; margin: 0; }
         }
     </style>
 </head>
-<body data-theme="light">
-
-<!-- Przełącznik motywu -->
-<div class="theme-toggle" onclick="toggleTheme()" title="Zmień motyw">
-    <span id="theme-icon">☀️</span>
-</div>
+<body>
 
 <div class="container no-print">
     <h1>Wykaz Ostrzeżeń Stałych (WOS) – TD2</h1>
-
+    
     <label for="maszynista">Maszynista:</label>
-    <select id="maszynista" required>
-        <option value="" disabled selected>Ładowanie aktywnych maszynistów...</option>
+    <select id="maszynista">
+        <option value="">-- Wybierz maszynistę --</option>
     </select>
 
-    <div style="margin-top: 16px;">
-        <button onclick="generujWOS()">Generuj WOS</button>
+    <div>
         <button onclick="window.print()">Drukuj / Zapisz jako PDF</button>
     </div>
 </div>
@@ -164,72 +94,129 @@
 <div class="container">
     <div id="wynik"></div>
 </div>
-
+    
+<script src="baza.js"></script>
 <script type="module">
-    import { BAZA_OSTRZEZEN } from './baza.js';
+    // Przechowuj dane pociągów globalnie
+    let trainsData = [];
+    let stations = [];
 
-    async function zaladujMaszynistow() {
+    // Funkcja do pobierania aktywnych maszynistów z API i wypełniania select
+    async function loadMaszynisci() {
         const select = document.getElementById('maszynista');
         try {
-            const response = await fetch('https://stacjownik.spythere.eu/api/getActiveData', { cache: 'no-cache' });
-            if (!response.ok) throw new Error(`API: ${response.status}`);
+            const response = await fetch('https://stacjownik.spythere.eu/api/getActiveData');
+            if (!response.ok) {
+                throw new Error('Błąd pobierania danych z API');
+            }
             const data = await response.json();
+            
+            console.log('Pobrane dane z API:', data);
+
+            // API zwraca obiekt z kolejami jako właściwościami numerycznymi (0, 1, 2...)
+            trainsData = data.trains
+            
+            console.log('Przetworzone dane pociągów:', trainsData);
+            // Wyciągnij unikalne driverName z danych
             const maszynisci = new Set();
-            if (Array.isArray(data)) {
-                data.forEach(train => {
-                    if (train?.driverName?.trim()) maszynisci.add(train.driverName.trim());
-                });
-            }
-            select.innerHTML = '<option value="" disabled selected>Wybierz maszynistę</option>';
-            if (maszynisci.size === 0) {
-                select.innerHTML += '<option disabled>Brak aktywnych maszynistów</option>';
-                return;
-            }
-            [...maszynisci].sort((a,b)=>a.localeCompare(b,'pl')).forEach(nick => {
-                const opt = document.createElement('option');
-                opt.value = nick;
-                opt.textContent = nick;
-                select.appendChild(opt);
+            trainsData.forEach(train => {
+                if (train.driverName) {
+                    maszynisci.add(train.driverName);
+                }
             });
-        } catch (err) {
-            console.error('Błąd pobierania maszynistów:', err);
-            select.innerHTML = '<option disabled>Błąd ładowania listy</option>';
+
+            console.log('Unikalni maszynisci:', maszynisci);
+            
+            // Posortuj alfabetycznie i dodaj opcje
+            Array.from(maszynisci).sort().forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                option.disabled = trainsData.filter(t => t.driverName === name).some(t => !t.timetable || !t.timetable.path);
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Błąd ładowania maszynistów:', error);
+            const option = document.createElement('option');
+            option.textContent = 'Błąd ładowania danych';
+            select.appendChild(option);
         }
     }
 
-    document.addEventListener('DOMContentLoaded', zaladujMaszynistow);
+    // Funkcja do aktualizacji stacji na podstawie wybranego maszynisty
+    function updateStacjeFromMaszynista() {
+        const selectedDriver = document.getElementById('maszynista').value;
+        if (!selectedDriver) {
+            alert('Proszę wybrać maszynistę.');
+            return;
+        }
 
-    document.getElementById('maszynista').addEventListener('change', function() {
-        if (this.value) generujWOS();
-    });
+        // Znajdź pociąg tego maszynisty
+        const train = trainsData.find(t => t.driverName === selectedDriver);
+        console.log('Wybrany pociąg maszynisty:', train);
+        if (!train || !train.timetable?.path) {
+            alert('Brak danych trasy dla wybranego maszynisty.');
+            document.getElementById('maszynista').value = '';
+            return;
+        }
 
-    function toggleTheme() {
-        const body = document.body;
-        const current = body.getAttribute('data-theme') || 'light';
-        const next = current === 'light' ? 'dark' : 'light';
-        body.setAttribute('data-theme', next);
-        document.getElementById('theme-icon').textContent = next === 'dark' ? '🌙' : '☀️';
-        localStorage.setItem('theme', next);
+
+        // Parsuj path - usuń znaczniki @, weź tylko nazwy stacji
+        const pathStations = train.timetable.path
+            .split(',')
+            .map(segment => segment.split('@')[0].trim())
+            .filter(name => name.includes('.sc'))
+            .map(name => {
+                // Wyciągnij nazwę stacji z formatu "Nazwa Stacji 12345678.sc"
+                const match = name.match(/^(.+?)\s+[0-9a-f]{8}\.sc$/);
+                return match ? match[1] : name;
+            })
+
+        console.log('Stacje z trasy pociągu:', pathStations);
+
+        // Wypełnij textarea dopasowanymi stacjami
+        stations = pathStations.join(',');
+        debugger
+        if(selectedDriver){
+            generujWOS()
+        }
     }
 
-    // Przywracanie zapamiętanego motywu
-    if (localStorage.getItem('theme') === 'dark' ||
-        (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.body.setAttribute('data-theme', 'dark');
-        document.getElementById('theme-icon').textContent = '🌙';
+    // Dodaj event listener do selecta maszynisty
+    document.getElementById('maszynista').addEventListener('change', updateStacjeFromMaszynista);
+
+    // Załaduj maszynistów po załadowaniu strony
+    document.addEventListener('DOMContentLoaded', loadMaszynisci);
+
+    function normalizuj(nazwa) {
+        return (nazwa || "").trim().toLowerCase()
+            .replace(/[ąćęłńóśźż]/g, c => ({'ą':'a','ć':'c','ę':'e','ł':'l','ń':'n','ó':'o','ś':'s','ź':'z','ż':'z'})[c] || c);
     }
 
-    function generujWOS() {
+    function formatKm(km) {
+        return km ? km.replace('.', ',') : '—';
+    }
+
+     function generujWOS() {
         const maszynista = document.getElementById("maszynista").value || "—";
+        const input = stations.trim();
+
+        console.log('Generowanie WOS dla maszynisty:', maszynista);
+        console.log('Stacje do przetworzenia:', input);
+        if (input.length === 0) {
+            document.getElementById("wynik").innerHTML = '<p style="text-align:center; color:#c00; margin-top:30px; font-size:14pt;"><b>Brak rozkładu jazdy</b></p>';
+            return;
+        }
+
+        const wpisy = input.split(/[,;]\s*/).map(s => s.trim());
         let lp = 1;
+
         let html = `
         <h1 style="margin:0 0 12px; font-size:15pt; text-align:center;">
             Wykaz Ostrzeżeń Stałych<br>
             oraz prędkości drogowych na torach głównych zasadniczych
         </h1>
-        <p style="text-align:center; margin-bottom:12px;">
-            Maszynista: <strong>${maszynista}</strong>
-        </p>
+
         <table class="wos-table">
           <thead>
             <tr>
@@ -251,13 +238,44 @@
               <th>9</th>
             </tr>
           </thead>
-          <tbody></tbody>
-        </table>
-        <p style="text-align:center; color:#c00; margin-top:30px; font-size:14pt;">
-            <b>Wybierz maszynistę, aby zobaczyć ostrzeżenia</b>
-        </p>`;
+          <tbody>`;
+
+        wpisy.forEach(nazwaWp => {
+            const klucz = Object.keys(BAZA_OSTRZEZEN).find(k => normalizuj(k) === normalizuj(nazwaWp));
+            if (!klucz) return;
+
+            html += `<tr><td colspan="8" class="station-header">${klucz}</td></tr>`;
+
+            const dane = [...BAZA_OSTRZEZEN[klucz]].sort((a,b) => {
+                const ka = parseFloat(a[0] || a[1] || -999999);
+                const kb = parseFloat(b[0] || b[1] || -999999);
+                return ka - kb;
+            });
+
+            dane.forEach(([od, doo, przyczyna, tor, vNiep, vPar, uwagi]) => {
+                html += `
+                <tr>
+                  <td>${lp++}</td>
+                  <td>${formatKm(od)}</td>
+                  <td>${formatKm(doo)}</td>
+                  <td style="text-align:left; padding-left:8px;">${przyczyna || '—'}</td>
+                  <td>${tor || '—'}</td>
+                  <td>${vNiep || '—'}</td>
+                  <td>${vPar || '—'}</td>
+                  <td style="text-align:left; padding-left:8px;">${uwagi || '—'}</td>
+                </tr>`;
+            });
+        });
+
+        html += "</tbody></table>";
+
+        if (lp === 1) {
+            html += '<p style="text-align:center; color:#c00; margin-top:30px; font-size:14pt;"><b>Nie znaleziono żadnej znanej scenerii</b></p>';
+        }
+
         document.getElementById("wynik").innerHTML = html;
-    }
+}
+    window.generujWOS=generujWOS
 </script>
 </body>
 </html>
