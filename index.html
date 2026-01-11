@@ -87,7 +87,7 @@
     </select>
 
     <div>
-        <button onclick="window.print()">Drukuj / Zapisz jako PDF</button>
+        <button id="printButton" disabled onclick="window.print()">Drukuj / Zapisz jako PDF</button>
     </div>
 </div>
 
@@ -132,7 +132,7 @@
                 const option = document.createElement('option');
                 option.value = name;
                 option.textContent = name;
-                option.disabled = trainsData.filter(t => t.driverName === name).some(t => !t.timetable || !t.timetable.path);
+                option.disabled = !trainsData.filter(t => t.driverName === name).find(t => t.timetable?.path)
                 select.appendChild(option);
             });
         } catch (error) {
@@ -152,7 +152,7 @@
         }
 
         // Znajdź pociąg tego maszynisty
-        const train = trainsData.find(t => t.driverName === selectedDriver);
+        const train = trainsData.filter(t => t.driverName === selectedDriver).find(t => t.timetable?.path);
         console.log('Wybrany pociąg maszynisty:', train);
         if (!train || !train.timetable?.path) {
             alert('Brak danych trasy dla wybranego maszynisty.');
@@ -178,6 +178,7 @@
         stations = pathStations.join(',');
         if(selectedDriver){
             generujWOS()
+            document.getElementById('printButton').disabled = false;
         }
     }
 
@@ -211,10 +212,14 @@
         let lp = 1;
 
         let html = `
-        <h1 style="margin:0 0 12px; font-size:15pt; text-align:center;">
+        <h1 style="margin:0 0 12px; font-size:15pt; text-align:center; color: black;">
             Wykaz Ostrzeżeń Stałych<br>
             oraz prędkości drogowych na torach głównych zasadniczych
         </h1>
+
+        <span style="float:right;">Godzina wydruku: <b>${new Date().toLocaleTimeString('pl-PL')}</b></span>
+        <span><br><br></span>
+        <span>Wygenerowano dla pociągu: <b>${trainsData.filter(t => t.driverName === maszynista).find(t => t.timetable?.path)?.trainNo || '—'}</b></span>
 
         <table class="wos-table">
           <thead>
@@ -227,14 +232,14 @@
               <th class="col-uwagi">Uwagi<br>Nr zmiany</th>
             </tr>
             <tr>
-              <th></th>
+              <th>1</th>
               <th>od km</th>
               <th>do km</th>
-              <th></th>
-              <th></th>
+              <th>4</th>
+              <th>5</th>
               <th>nieparzystym</th>
               <th>parzystym</th>
-              <th></th>
+              <th>9</th>
             </tr>
           </thead>
           <tbody>`;
@@ -276,5 +281,6 @@
 }
     window.generujWOS=generujWOS
 </script>
+<span style="float: right;">&copy; Blue & Kacper9</span>
 </body>
 </html>
