@@ -313,5 +313,5 @@ const BAZA_OSTRZEZEN = {
   "Łódź Chojny": [
     ["6,450", "6,660", "ograniczona widoczność na przejściu dla pieszych, zły stan wiaduktu", "1", "50", "50", ""],
     ["6,450", "6,540", "zły stan wiaduktu", "2", "60", "60", ""]
-  ]
+  ],
 };
