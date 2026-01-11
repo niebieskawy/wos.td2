@@ -272,4 +272,46 @@ const BAZA_OSTRZEZEN = {
     ["219,960", "220,006", "zły stan rozjazdu", "2", "30", "30", ""],
     ["1,835", "2,158", "Most dwudrogowy", "1", "20", "20", "zachować szczególną ostrożność"]
   ]
+  "Glinnik": [
+    ["48,200", "48,530", "ograniczona widoczność na przejeździe", "1", "50", "", "tylko dla czoła pociągu"],
+    ["48,510", "48,800", "ograniczona widoczność na przejeździe", "1", "", "50", "tylko dla czoła pociągu"],
+    ["51,550", "51,950", "ograniczona widoczność na przejeździe", "1", "70", "", "tylko dla czoła pociągu"],
+    ["52,250", "52,590", "ograniczona widoczność na przejeździe", "1", "60", "", "tylko dla czoła pociągu"],
+    ["52,580", "52,920", "ograniczona widoczność na przejeździe", "1", "", "60", "tylko dla czoła pociągu"],
+    ["53,600", "53,890", "ograniczona widoczność na przejeździe", "1", "50", "", "tylko dla czoła pociągu"]
+  ],
+  "Kłudna": [
+    ["212,350", "213,250", "zły stan szyn", "3", "20", "20", ""],
+    ["212,360", "213,200", "zły stan szyn", "4", "30", "30", ""]
+  ],
+  "LCS Głowno": [
+    ["32,600", "32,800", "zbyt mały promień łuku", "1", "90", "90", ""]
+  ],
+  "Lublinek": [
+    ["6,378", "7,282", "zły stan toru", "7", "20", "20", ""]
+  ],
+  "Otok": [
+    ["190,930", "191,750", "zły stan toru", "4", "30", "30", ""],
+    ["191,000", "191,200", "zły stan podtorza", "1", "50", "50", ""],
+    ["191,000", "191,400", "zły stan podtorza", "2", "50", "50", ""],
+    ["192,180", "192,280", "tymczasowa konstrukcja odciążająca na moście", "1", "40", "40", ""],
+    ["192,180", "192,280", "tymczasowa konstrukcja odciążająca na moście", "2", "30", "30", ""],
+    ["195,190", "195,642", "ograniczona widoczność na przejeździe", "1", "70", "-", ""]
+  ],
+  "Skrzynki": [
+    ["47,800", "48,580", "zły stan toru", "4", "20", "20", ""]
+  ],
+  "Szadek": [
+    ["178,920", "179,740", "zły stan toru", "3", "20", "20", ""]
+  ],
+  "Zgierz": [
+    ["58,550", "58,600", "przesunięta konstrukcja wiaduktu", "2", "30", "30", ""],
+    ["58,500", "58,850", "przesunięta konstrukcja wiaduktu", "1", "30", "30", ""],
+    ["14,400", "14,620", "ograniczona widoczność na przejeździe", "1", "40", "40", "tylko dla czoła pociągu"],
+    ["14,610", "14,840", "ograniczona widoczność na przejeździe", "1", "40", "40", "tylko dla czoła pociągu"]
+  ],
+  "Łódź Chojny": [
+    ["6,450", "6,660", "ograniczona widoczność na przejściu dla pieszych, zły stan wiaduktu", "1", "50", "50", ""],
+    ["6,450", "6,540", "zły stan wiaduktu", "2", "60", "60", ""]
+  ]
 };
