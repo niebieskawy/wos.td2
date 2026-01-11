@@ -97,11 +97,10 @@
     
 <script src="baza.js"></script>
 <script type="module">
-    // Przechowuj dane pociągów globalnie
+ 
     let trainsData = [];
     let stations = [];
 
-    // Funkcja do pobierania aktywnych maszynistów z API i wypełniania select
     async function loadMaszynisci() {
         const select = document.getElementById('maszynista');
         try {
@@ -113,11 +112,9 @@
             
             console.log('Pobrane dane z API:', data);
 
-            // API zwraca obiekt z kolejami jako właściwościami numerycznymi (0, 1, 2...)
             trainsData = data.trains
             
             console.log('Przetworzone dane pociągów:', trainsData);
-            // Wyciągnij unikalne driverName z danych
             const maszynisci = new Set();
             trainsData.forEach(train => {
                 if (train.driverName) {
@@ -127,7 +124,6 @@
 
             console.log('Unikalni maszynisci:', maszynisci);
             
-            // Posortuj alfabetycznie i dodaj opcje
             Array.from(maszynisci).sort().forEach(name => {
                 const option = document.createElement('option');
                 option.value = name;
@@ -143,7 +139,6 @@
         }
     }
 
-    // Funkcja do aktualizacji stacji na podstawie wybranego maszynisty
     function updateStacjeFromMaszynista() {
         const selectedDriver = document.getElementById('maszynista').value;
         if (!selectedDriver) {
@@ -151,7 +146,6 @@
             return;
         }
 
-        // Znajdź pociąg tego maszynisty
         const train = trainsData.filter(t => t.driverName === selectedDriver).find(t => t.timetable?.path);
         console.log('Wybrany pociąg maszynisty:', train);
         if (!train || !train.timetable?.path) {
@@ -161,7 +155,6 @@
         }
 
 
-        // Parsuj path - usuń znaczniki @, weź tylko nazwy stacji
         const pathStations = train.timetable.path
             .split(',')
             .map(segment => segment.split('@')[0].trim())
@@ -174,7 +167,6 @@
 
         console.log('Stacje z trasy pociągu:', pathStations);
 
-        // Wypełnij textarea dopasowanymi stacjami
         stations = pathStations.join(',');
         if(selectedDriver){
             generujWOS()
@@ -182,10 +174,8 @@
         }
     }
 
-    // Dodaj event listener do selecta maszynisty
     document.getElementById('maszynista').addEventListener('change', updateStacjeFromMaszynista);
 
-    // Załaduj maszynistów po załadowaniu strony
     document.addEventListener('DOMContentLoaded', loadMaszynisci);
 
     function normalizuj(nazwa) {
@@ -232,14 +222,14 @@
               <th class="col-uwagi">Uwagi<br>Nr zmiany</th>
             </tr>
             <tr>
-              <th>1</th>
+              <th></th>
               <th>od km</th>
               <th>do km</th>
-              <th>4</th>
-              <th>5</th>
+              <th></th>
+              <th></th>
               <th>nieparzystym</th>
               <th>parzystym</th>
-              <th>9</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>`;
@@ -274,7 +264,7 @@
         html += "</tbody></table>";
 
         if (lp === 1) {
-            html += '<p style="text-align:center; color:#c00; margin-top:30px; font-size:14pt;"><b>Nie znaleziono żadnej znanej scenerii</b></p>';
+            html += '<p style="text-align:center; color:#c00; margin-top:30px; font-size:14pt;"><b>Brak WOS dla danego rozkładu</b></p>';
         }
 
         document.getElementById("wynik").innerHTML = html;
