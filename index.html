@@ -3,73 +3,117 @@
     <meta name="color-scheme" content="light dark">
 
 <style>
+    #theme-switch {
+    position: fixed;
+    top: 12px;
+    right: 16px;
+    z-index: 1000;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(100,116,139,0.25);
+    color: var(--text);
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(6px);
+    transition: all 0.2s ease;
+  }
+
+  #theme-switch:hover {
+    background: rgba(100,116,139,0.4);
+    transform: scale(1.1);
+  }
+
+  /* ← Najważniejsza część – ukrywanie przy drukowaniu */
+  @media print {
+    #theme-switch {
+      display: none !important;
+    }
+  }
   :root {
     --bg: #ffffff;
-    --text: #111111;
-    --card: #f8f9fa;
-    --border: #e0e0e0;
-    --btn-bg: #f1f1f1;
-    --btn-hover: #e0e0e0;
+    --text: #0f172a;
+    --card: #f8fafc;
+    --table-head: #e2e8f0;
+    --border: #cbd5e1;
+    --input-bg: #ffffff;
+    --input-text: #0f172a;
   }
 
   [data-theme="dark"] {
-    --bg: #121212;
-    --text: #e0e0e0;
-    --card: #1e1e1e;
-    --border: #333;
-    --btn-bg: #2a2a2a;
-    --btn-hover: #444;
+    --bg: #0f172a;
+    --text: #e2e8f0;
+    --card: #1e293b;
+    --table-head: #334155;
+    --border: #475569;
+    --input-bg: #1e293b;
+    --input-text: #e2e8f0;
   }
 
   body {
     background: var(--bg);
     color: var(--text);
-    transition: background 0.4s, color 0.4s;
+    transition: background 0.3s, color 0.3s;
   }
 
-  .container, .card, table, th, td {
+  .container, .card {
     background: var(--card);
     border-color: var(--border);
   }
 
-  a {
-    color: #60a5fa;
+  table {
+    background: var(--card);
+    color: var(--text);
   }
 
-  a:hover {
-    color: #93c5fd;
+  th {
+    background: var(--table-head);
+    color: var(--text);
   }
 
-  /* Przycisk theme switcher */
-  .theme-toggle {
+  td, th {
+    border-color: var(--border);
+  }
+
+  input, select, button {
+    background: var(--input-bg);
+    color: var(--input-text);
+    border-color: var(--border);
+  }
+
+  button#printBtn {
+    /* chowamy oryginalny przycisk drukuj */
+    display: none !important;
+  }
+
+  /* Bardzo prosty, ładny przełącznik w rogu */
+  #theme-switch {
     position: fixed;
-    top: 16px;
-    right: 20px;
+    top: 12px;
+    right: 16px;
     z-index: 1000;
-    width: 48px;
-    height: 48px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: none;
-    background: var(--btn-bg);
+    background: rgba(100,116,139,0.25);
     color: var(--text);
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
-    transition: all 0.25s ease;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
+    transition: all 0.2s ease;
   }
 
-  .theme-toggle:hover {
-    background: var(--btn-hover);
-    transform: scale(1.08);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.35);
-  }
-
-  .theme-toggle:active {
-    transform: scale(0.96);
+  #theme-switch:hover {
+    background: rgba(100,116,139,0.4);
+    transform: scale(1.1);
   }
 </style>
 <head>
@@ -149,7 +193,7 @@
     </style>
 </head>
 <body>
-    <button class="theme-toggle" aria-label="Zmień motyw">🌙</button>
+    <button id="theme-switch">🌙</button>
 
 <div class="container no-print">
     <h1>Wykaz Ostrzeżeń Stałych (WOS) – TD2</h1>
@@ -349,29 +393,27 @@
         document.getElementById("wynik").innerHTML = html;
 }
     window.generujWOS=generujWOS
-</script>
-    <script>
-  const toggle = document.querySelector('.theme-toggle');
+<script>
   const html = document.documentElement;
+  const switchBtn = document.createElement('button');
+  switchBtn.id = 'theme-switch';
+  switchBtn.textContent = '☀️';
+  document.body.appendChild(switchBtn);
 
-  // Wczytanie zapisanego motywu lub systemowego
-  const savedTheme = localStorage.getItem('theme');
-  if (savedTheme) {
-    html.setAttribute('data-theme', savedTheme);
-    toggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
-  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    html.setAttribute('data-theme', 'dark');
-    toggle.textContent = '☀️';
+  // Wczytanie zapisanego lub systemowego motywu
+  let theme = localStorage.getItem('theme');
+  if (!theme) {
+    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   }
 
-  toggle.addEventListener('click', () => {
-    const current = html.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    
-    html.setAttribute('data-theme', next);
-    toggle.textContent = next === 'dark' ? '☀️' : '🌙';
-    
-    localStorage.setItem('theme', next);
+  html.setAttribute('data-theme', theme);
+  switchBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+
+  switchBtn.addEventListener('click', () => {
+    theme = theme === 'dark' ? 'light' : 'dark';
+    html.setAttribute('data-theme', theme);
+    switchBtn.textContent = theme === 'dark' ? '☀️' : '🌙';
+    localStorage.setItem('theme', theme);
   });
 </script>
 </body>
