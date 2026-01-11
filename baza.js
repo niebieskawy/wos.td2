@@ -271,7 +271,7 @@ const BAZA_OSTRZEZEN = {
     ["218,367", "219,596", "stromy podjazd, stosować popych", "1", "-", "-", "dot. ciężkich poc. tow."],
     ["219,960", "220,006", "zły stan rozjazdu", "2", "30", "30", ""],
     ["1,835", "2,158", "Most dwudrogowy", "1", "20", "20", "zachować szczególną ostrożność"]
-  ]
+  ],
   "Glinnik": [
     ["48,200", "48,530", "ograniczona widoczność na przejeździe", "1", "50", "", "tylko dla czoła pociągu"],
     ["48,510", "48,800", "ograniczona widoczność na przejeździe", "1", "", "50", "tylko dla czoła pociągu"],
