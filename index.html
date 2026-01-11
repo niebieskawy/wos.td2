@@ -1,5 +1,77 @@
 <!DOCTYPE html>
 <html lang="pl">
+    <meta name="color-scheme" content="light dark">
+
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #111111;
+    --card: #f8f9fa;
+    --border: #e0e0e0;
+    --btn-bg: #f1f1f1;
+    --btn-hover: #e0e0e0;
+  }
+
+  [data-theme="dark"] {
+    --bg: #121212;
+    --text: #e0e0e0;
+    --card: #1e1e1e;
+    --border: #333;
+    --btn-bg: #2a2a2a;
+    --btn-hover: #444;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.4s, color 0.4s;
+  }
+
+  .container, .card, table, th, td {
+    background: var(--card);
+    border-color: var(--border);
+  }
+
+  a {
+    color: #60a5fa;
+  }
+
+  a:hover {
+    color: #93c5fd;
+  }
+
+  /* Przycisk theme switcher */
+  .theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 20px;
+    z-index: 1000;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: var(--btn-bg);
+    color: var(--text);
+    font-size: 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.25);
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
+  }
+
+  .theme-toggle:hover {
+    background: var(--btn-hover);
+    transform: scale(1.08);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.35);
+  }
+
+  .theme-toggle:active {
+    transform: scale(0.96);
+  }
+</style>
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -77,6 +149,7 @@
     </style>
 </head>
 <body>
+    <button class="theme-toggle" aria-label="Zmień motyw">🌙</button>
 
 <div class="container no-print">
     <h1>Wykaz Ostrzeżeń Stałych (WOS) – TD2</h1>
@@ -276,6 +349,30 @@
         document.getElementById("wynik").innerHTML = html;
 }
     window.generujWOS=generujWOS
+</script>
+    <script>
+  const toggle = document.querySelector('.theme-toggle');
+  const html = document.documentElement;
+
+  // Wczytanie zapisanego motywu lub systemowego
+  const savedTheme = localStorage.getItem('theme');
+  if (savedTheme) {
+    html.setAttribute('data-theme', savedTheme);
+    toggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+  } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    html.setAttribute('data-theme', 'dark');
+    toggle.textContent = '☀️';
+  }
+
+  toggle.addEventListener('click', () => {
+    const current = html.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', next);
+    toggle.textContent = next === 'dark' ? '☀️' : '🌙';
+    
+    localStorage.setItem('theme', next);
+  });
 </script>
 </body>
 </html>
