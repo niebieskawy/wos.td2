@@ -4,14 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-60L8K0BFGL"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJVVXWKS32"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-Q64CNY6BM7');
+      gtag('config', 'G-WJVVXWKS32');
     </script>
     
     <title>WOS TD2 - Generator ostrzeżeń stałych</title>
@@ -446,7 +445,6 @@
         const dlTrains = document.getElementById('list-trains');
         const saveCheckbox = document.getElementById('save-last-driver');
 
-        // Wyczyść mapy przed załadowaniem nowych danych
         nickToTrainMap.clear();
         trainToNickMap.clear();
 
@@ -510,18 +508,15 @@
                 select.appendChild(option);
             });
 
-            // Sprawdź czy jest zapisany ostatni maszynista
             const savedDriver = localStorage.getItem('wos_last_driver');
             if (savedDriver) {
                 const savedDriverTrain = maszynisciMap.get(savedDriver);
                 
                 if (savedDriverTrain && savedDriverTrain.timetable && savedDriverTrain.timetable.path) {
-                    // Maszynista jest aktywny - ustaw go i zaznacz checkbox
                     select.value = savedDriver;
                     saveCheckbox.checked = true;
                     updateStacjeFromMaszynista();
                 } else if (maszynisciMap.has(savedDriver)) {
-                    // Maszynista istnieje ale nie ma aktywnego rozkładu
                     saveCheckbox.checked = true;
                     document.getElementById("wynik").innerHTML = `
                         <div class="warning-message">
@@ -530,7 +525,6 @@
                         </div>
                     `;
                 } else {
-                    // Maszynista nie istnieje - usuń z localStorage
                     localStorage.removeItem('wos_last_driver');
                 }
             }
@@ -589,7 +583,6 @@
         searchNickInput.value = "";
         searchTrainInput.value = "";
         
-        // Zapisz ostatniego maszynistę jeśli checkbox jest zaznaczony
         const saveCheckbox = document.getElementById('save-last-driver');
         if (saveCheckbox.checked && mainSelect.value) {
             localStorage.setItem('wos_last_driver', mainSelect.value);
@@ -599,33 +592,26 @@
     // Obsługa checkboxa zapisywania
     document.getElementById('save-last-driver').addEventListener('change', (e) => {
         if (!e.target.checked) {
-            // Usuń zapisanego maszynistę jeśli odznaczono
             localStorage.removeItem('wos_last_driver');
         } else if (mainSelect.value) {
-            // Zapisz aktualnego maszynistę jeśli zaznaczono
             localStorage.setItem('wos_last_driver', mainSelect.value);
         }
     });
 
-    // Eksportuj funkcję loadMaszynisci i dane do globalnego scope
     window.loadMaszynisciModule = loadMaszynisci;
     
-    // Aktualizuj eksport danych po każdym załadowaniu
     const updateTrainsDataExport = () => {
         window.trainsDataModule = trainsData;
     };
     
-    // Inicjalny eksport danych
     updateTrainsDataExport();
     
-    // Wywołaj po załadowaniu danych
     const originalLoadMaszynisci = loadMaszynisci;
     window.loadMaszynisciModule = async function() {
         await originalLoadMaszynisci();
         updateTrainsDataExport();
     };
 
-    // Station tab functionality
     const searchStationInput = document.getElementById('search-station');
     const stationSelect = document.getElementById('station-select');
 
