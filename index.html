@@ -10,7 +10,22 @@
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
 
-      gtag('config', 'G-WJVVXWKS32');
+      gtag('config', 'G-WJVVXWKS32', {
+        debug_mode: true,
+        send_page_view: true
+      });
+      
+      setTimeout(() => {
+        if (typeof gtag === 'function') {
+          console.log('✅ GA initialized - tracking ID: G-WJVVXWKS32');
+          gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: window.location.href
+          });
+        } else {
+          console.error('❌ GA not loaded');
+        }
+      }, 2000);
     </script>
     
     <title>WOS TD2 - Generator ostrzeżeń stałych</title>
