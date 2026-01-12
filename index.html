@@ -4,29 +4,69 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJVVXWKS32"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'G-WJVVXWKS32', {
-        debug_mode: true,
-        send_page_view: true
-      });
-      
-      setTimeout(() => {
-        if (typeof gtag === 'function') {
-          console.log('✅ GA initialized - tracking ID: G-WJVVXWKS32');
-          gtag('event', 'page_view', {
-            page_title: document.title,
-            page_location: window.location.href
-          });
-        } else {
-          console.error('❌ GA not loaded');
+    <!-- Cookie Consent -->
+    <style>
+        .cookie-consent {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: var(--bg-container);
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
         }
-      }, 2000);
+        .cookie-consent-text {
+            flex: 1;
+            font-size: 0.9em;
+            color: var(--text-color);
+        }
+        .cookie-consent-button {
+            background: var(--btn-bg);
+            color: var(--btn-text);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        .cookie-consent-button:hover {
+            background: var(--btn-hover);
+        }
+        @media (max-width: 600px) {
+            .cookie-consent {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+    
+    <!-- Google tag (gtag.js) -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        function initGA() {
+            gtag('config', 'G-WJVVXWKS32', {
+                debug_mode: false,
+                send_page_view: true
+            });
+            console.log('✅ GA initialized with consent');
+        }
+
+        if (localStorage.getItem('cookie-consent') === 'accepted') {
+            initGA();
+        }
     </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJVVXWKS32"></script>
     
     <title>WOS TD2 - Generator ostrzeżeń stałych</title>
     <style>
@@ -825,5 +865,25 @@
     <span style="float: right;">version 1.1.0</span><br><br>
     <span style="float: right; font-size: 0.8em;">Dane pobierane za pośrednictwem API: <a href="https://stacjownik-td2.spythere.eu">Stacjownik</a></span>
 </section>
+
+<!-- Cookie Consent Banner -->
+<div id="cookie-consent" class="cookie-consent" style="display: none;">
+    <div class="cookie-consent-text">
+        Ta strona używa ciasteczek (cookies) do analizy ruchu. Korzystając ze strony wyrażasz zgodę na ich używanie.
+    </div>
+    <button class="cookie-consent-button" onclick="acceptCookies()">Akceptuję</button>
+</div>
+
+<script>
+    function acceptCookies() {
+        localStorage.setItem('cookie-consent', 'accepted');
+        document.getElementById('cookie-consent').style.display = 'none';
+        initGA();
+    }
+
+    if (localStorage.getItem('cookie-consent') !== 'accepted') {
+        document.getElementById('cookie-consent').style.display = 'flex';
+    }
+</script>
 </body>
 </html>
