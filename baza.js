@@ -315,6 +315,3 @@ const BAZA_OSTRZEZEN = {
     ["113,964", "113,785", "jazda z opuszczonymi pantografami", "1", "-", "-", "*)"]
   ]
 };
-
-Wygenerowano: 13.01.2026, 13:24:51
-Edytor WOS Professional Edition
