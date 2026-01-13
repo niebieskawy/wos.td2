@@ -232,7 +232,7 @@ const BAZA_OSTRZEZEN = {
     ["63,135", "63,148", "Zły stan wiaduktu", "1", "40", "40", ""]
   ],
   "Warszowice-Strumień": [
-    ["4,532", "5,052", "ograniczona widoczność", "1, 2", "80", "80", "* )"]
+    ["4,532", "5,052", "ograniczona widoczność", "1, 2", "80", "80", "* )"],
   ],
   "Wełtawa": [
     ["62,672", "63,115", "Zły stan toru", "6", "30", "30", ""],
