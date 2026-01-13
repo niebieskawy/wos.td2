@@ -313,5 +313,5 @@ const BAZA_OSTRZEZEN = {
   ],
   "Zwardoń": [
     ["113,964", "113,785", "jazda z opuszczonymi pantografami", "1", "-", "-", "*)"]
-  ]
+  ],
 };
