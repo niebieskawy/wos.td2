@@ -1421,6 +1421,18 @@ const BAZA_OSTRZEZEN = {
       "uwagi": ""
     }
   ],
+  "Tarkowice": [
+    {
+      "stacja": "Ne",
+      "odkm": "112.460",
+      "dokm": "112.500",
+      "przyczyna": "-",
+      "tor": "1, 2",
+      "vniep": "60",
+      "vparz": "60",
+      "uwagi": "doraźne"
+    }
+  ],
   "Świelborze": [
     {
       "stacja": "Świelborze Sb1",
