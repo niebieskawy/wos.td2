@@ -1463,6 +1463,18 @@ const BAZA_OSTRZEZEN = {
       "uwagi": "zachować szczególną ostrożność"
     }
   ],
+  "Tarkowice": [
+    {
+      "stacja": "Ne",
+      "odkm": "112.460",
+      "dokm": "112.500",
+      "przyczyna": "-",
+      "tor": "1, 2",
+      "vniep": "60",
+      "vparz": "60",
+      "uwagi": "doraźne"
+    }
+  ],
   "Testowo": [
     {
       "stacja": "Bk",
@@ -1721,7 +1733,7 @@ const BAZA_OSTRZEZEN = {
       "uwagi": ""
     }
   ],
-    "Witowo": [
+    "Włoszczowa Północ": [
     {
       "stacja": "Ol",
       "odkm": "142.700",
