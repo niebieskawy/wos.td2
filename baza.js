@@ -1227,7 +1227,7 @@ const BAZA_OSTRZEZEN = {
       "uwagi": ""
     }
   ],
-  "Sarnów Modrzejewski": [
+  "Sarnów Modrzewski": [
     {
       "stacja": "Tm",
       "odkm": "11,059",
