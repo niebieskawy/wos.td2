@@ -1227,6 +1227,18 @@ const BAZA_OSTRZEZEN = {
       "uwagi": ""
     }
   ],
+  "Rychlik": [
+    {
+      "stacja": "ZG",
+      "odkm": "35,143",
+      "dokm": "35,193",
+      "przyczyna": "zły stan techniczny mostu",
+      "tor": "1",
+      "vniep": "30",
+      "vparz": "30",
+      "uwagi": ""
+    }
+  ],
   "Sarnów Modrzewski": [
     {
       "stacja": "Tm",
@@ -1259,7 +1271,7 @@ const BAZA_OSTRZEZEN = {
       "uwagi": ""
     },
     {
-      "stacja": "Sarnów Modrzejewski",
+      "stacja": "Sarnów Modrzewski",
       "odkm": "12,251",
       "dokm": "13,181",
       "przyczyna": "pogorszenie stanu toru",
@@ -1269,7 +1281,7 @@ const BAZA_OSTRZEZEN = {
       "uwagi": ""
     },
     {
-      "stacja": "Sarnów Modrzejewski",
+      "stacja": "Sarnów Modrzewski",
       "odkm": "12,657",
       "dokm": "12,989",
       "przyczyna": "plac manewrowy",
@@ -1733,7 +1745,7 @@ const BAZA_OSTRZEZEN = {
       "uwagi": ""
     }
   ],
-    "Włoszczowa Północ": [
+  "Włoszczowa Północ": [
     {
       "stacja": "Ol",
       "odkm": "142.700",
@@ -2042,3 +2054,5 @@ const BAZA_OSTRZEZEN = {
     }
   ]
 };
+
+export default BAZA_OSTRZEZEN;
