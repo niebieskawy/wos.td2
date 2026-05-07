@@ -1,4 +1,4 @@
-const BAZA_OSTRZEZEN = {
+window.BAZA_OSTRZEZEN = {
   "Aleksandrów Kujawski": [
     {
       "stacja": "Aleksandrów Kujawski",
@@ -2055,4 +2055,4 @@ const BAZA_OSTRZEZEN = {
   ]
 };
 
-export default BAZA_OSTRZEZEN;
+const BAZA_OSTRZEZEN = window.BAZA_OSTRZEZEN;
