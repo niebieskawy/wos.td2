@@ -547,6 +547,58 @@ window.BAZA_OSTRZEZEN = {
       "uwagi": "tylko czoło"
     }
   ],
+  "Kłosowice": [
+    {
+      "stacja": "Kłosowice L412",
+      "odkm": "38,507",
+      "dokm": "38,856",
+      "przyczyna": "zły stan techniczny toru",
+      "tor": "2",
+      "vniep": "20",
+      "vparz": "20",
+      "uwagi": "*) doraźne"
+    },
+    {
+      "stacja": "Kłosowice L412",
+      "odkm": "39,206",
+      "dokm": "39,239",
+      "przyczyna": "zły stan techniczny rozjazdu nr 13",
+      "tor": "7",
+      "vniep": "20",
+      "vparz": "20",
+      "uwagi": "*) doraźne"
+    },
+    {
+      "stacja": "Kłosowice L438",
+      "odkm": "-0,043",
+      "dokm": "-0,010",
+      "przyczyna": "zły stan techniczny rozjazdu nr 13",
+      "tor": "7",
+      "vniep": "20",
+      "vparz": "20",
+      "uwagi": "*) doraźne"
+    },
+    {
+      "stacja": "Kłosowice L438",
+      "odkm": "0,341",
+      "dokm": "0,687",
+      "przyczyna": "zły stan techniczny toru",
+      "tor": "2",
+      "vniep": "20",
+      "vparz": "20",
+      "uwagi": "*) doraźne"
+    },
+    {
+      "stacja": "Kłosowice - Zaborze",
+      "odkm": "2,867",
+      "dokm": "2,920",
+      "przyczyna": "zły stan techniczny toru",
+      "tor": "1",
+      "vniep": "30",
+      "vparz": "30",
+      "uwagi": ""
+    }
+  ],
   "Kłudna": [
     {
       "stacja": "Kłudna",
