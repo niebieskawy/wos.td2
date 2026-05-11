@@ -1841,6 +1841,18 @@ window.BAZA_OSTRZEZEN = {
       "uwagi": ""
     }
   ],
+  "Wschowa": [
+    {
+      "stacja": "Lasocice-Wschowa",
+      "odkm": "252,400",
+      "dokm": "253,150",
+      "przyczyna": "zły stan podkładów",
+      "tor": "1",
+      "vniep": "30",
+      "vparz": "30",
+      "uwagi": ""
+    }
+  ],
   "Zakopane": [
     {
       "stacja": "Po",
