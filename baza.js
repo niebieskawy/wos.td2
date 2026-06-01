@@ -859,6 +859,18 @@ window.BAZA_OSTRZEZEN = {
       "uwagi": "Poza WOS"
     }
   ],
+  "LCS Obżerniki": [
+    {
+      "stacja": "Wierych pb",
+      "odkm": "25,011",
+      "dokm": "25,094",
+      "przyczyna": "Zbyt mały opór poprzeczny podłoża",
+      "tor": "1",
+      "vniep": "120",
+      "vparz": "120",
+      "uwagi": ""
+    }
+  ],
   "LCS Perzów": [
     {
       "stacja": "Perzów",
